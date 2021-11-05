@@ -1,4 +1,13 @@
-#include "drawRectNV12.h"
+/*
+ * @Description: Draw line/rectangle on YUV.
+ * @Version: 1.0
+ * @Author: Ricardo Lu<shenglu1202@163.com>
+ * @Date: 2021-11-03 11:03:18
+ * @LastEditTime: 2021-11-03 11:39:51
+ * @LastEditors: Please set LastEditors
+ */
+
+#include "osdyuv.h"
 
 void setYUVPix(unsigned char* YBuf,
                 unsigned char * UVBuf,
@@ -6,7 +15,7 @@ void setYUVPix(unsigned char* YBuf,
                 uint16_t width,
                 uint16_t height,
                 imgPoint point,
-                YUVColor color)
+                YUVPixColor color)
 {
     switch(type)
     {
@@ -28,10 +37,10 @@ void setYUVPix(unsigned char* YBuf,
                 u_offset = y_offset + 1;
                 v_offset = u_offset + 2;
             }
-            YBuf[y_offset] = s_color_table[color].Y;
-            YBuf[y_offset + 2] = s_color_table[color].Y;
-            YBuf[u_offset] = s_color_table[color].U;
-            YBuf[v_offset] = s_color_table[color].V;
+            YBuf[y_offset] = color.Y;
+            YBuf[y_offset + 2] = color.Y;
+            YBuf[u_offset] = color.U;
+            YBuf[v_offset] = color.V;
         }break;
         case TYPE_YUV420SP_NV12:
         case TYPE_YUV420SP_NV21:
@@ -43,27 +52,27 @@ void setYUVPix(unsigned char* YBuf,
             */
             uint32_t y_offset = point.y * width + point.x;
             uint32_t u_offset = 0, v_offset = 0;
-            YBuf[y_offset] = s_color_table[color].Y;
+            YBuf[y_offset] = color.Y;
             #if 0
             Int32 x_flag = 1, y_flag = 1;
             if(point.y % 2 == 0) {
-                YBuf[y_offset + width] = s_color_table[color].Y;
+                YBuf[y_offset + width] = color.Y;
                 y_flag = 1;
             }
             else {
-                YBuf[y_offset - width] = s_color_table[color].Y;
+                YBuf[y_offset - width] = color.Y;
                 y_flag = -1;
             }
  
             if(point.x % 2 == 0) {
-                YBuf[y_offset + 1] = s_color_table[color].Y;
+                YBuf[y_offset + 1] = color.Y;
                 x_flag = 1;
             }
             else {
-                YBuf[y_offset - 1] = s_color_table[color].Y;
+                YBuf[y_offset - 1] = color.Y;
                 x_flag = -1;
             }
-            YBuf[y_offset + width * y_flag + 1 * x_flag] = s_color_table[color].Y;
+            YBuf[y_offset + width * y_flag + 1 * x_flag] = color.Y;
             #endif
             
             if(type == TYPE_YUV420SP_NV12) {
@@ -74,8 +83,8 @@ void setYUVPix(unsigned char* YBuf,
                 v_offset = (point.y / 2) * width + point.x / 2 * 2;
                 u_offset = v_offset + 1;
             }
-            UVBuf[u_offset] = s_color_table[color].U;
-            UVBuf[v_offset] = s_color_table[color].V;
+            UVBuf[u_offset] = color.U;
+            UVBuf[v_offset] = color.V;
         }break;
         case TYPE_YUV444P:
         {
@@ -89,9 +98,9 @@ void setYUVPix(unsigned char* YBuf,
             y_offset = point.y * width + point.x;
             u_offset = y_offset;
             v_offset = plane_size + u_offset;
-            YBuf[y_offset] = s_color_table[color].Y;
-            UVBuf[u_offset] = s_color_table[color].U;
-            UVBuf[v_offset] = s_color_table[color].V;
+            YBuf[y_offset] = color.Y;
+            UVBuf[u_offset] = color.U;
+            UVBuf[v_offset] = color.V;
         }break;
         case TYPE_YUV444I:
         {
@@ -102,9 +111,9 @@ void setYUVPix(unsigned char* YBuf,
             y_offset = point.y * width * 3 + point.x * 3;
             u_offset = y_offset + 1;
             v_offset = u_offset + 1;
-            YBuf[y_offset] = s_color_table[color].Y;
-            YBuf[u_offset] = s_color_table[color].U;
-            YBuf[v_offset] = s_color_table[color].V;
+            YBuf[y_offset] = color.Y;
+            YBuf[u_offset] = color.U;
+            YBuf[v_offset] = color.V;
         }break;
         case TYPE_YUV422P:
         {
@@ -118,9 +127,9 @@ void setYUVPix(unsigned char* YBuf,
             y_offset = point.y * width + point.x;
             u_offset = y_offset / 2;
             v_offset = plane_size + y_offset / 2;
-            YBuf[y_offset] = s_color_table[color].Y;
-            UVBuf[u_offset] = s_color_table[color].U;
-            UVBuf[v_offset] = s_color_table[color].V;
+            YBuf[y_offset] = color.Y;
+            UVBuf[u_offset] = color.U;
+            UVBuf[v_offset] = color.V;
         }break;
     }
 }
@@ -197,7 +206,7 @@ void drawLine(YUVImgInfo *img, lineInfo *line)
     }
 }
 
-void drawRectangle(YUVImgInfo *img, YUVRectangle rect, YUVColor color, uint16_t thick)
+void drawRectangle(YUVImgInfo *img, YUVRectangle rect, YUVPixColor color, uint16_t thick)
 {
     lineInfo line;
     line.color = color;

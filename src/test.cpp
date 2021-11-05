@@ -1,7 +1,15 @@
+/*
+ * @Author: your name
+ * @Date: 2021-11-03 11:03:18
+ * @LastEditTime: 2021-11-03 11:39:30
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /ReID/thirdparty/draw-rectangle-on-YUV/test.cpp
+ */
 #include <stdio.h>
 #include <sys/time.h>
 
-#include "drawRectNV12.h"
+#include "osdyuv.h"
 
 #define IMAGE_WIDTH 1920
 #define IMAGE_HEIGHT 1080
@@ -29,11 +37,12 @@ int main()
     m_Rect.height = 800;
     m_Rect.width = 1000;
 
+    YUVPixColor green = {0x00, 0x00, 0xff};
     timeval startTime, endTime;
     long long int delta;
 
     gettimeofday(&startTime, NULL);
-    drawRectangle(&m_YUVImgInfo, m_Rect, YUV_GREEN, 5);
+    drawRectangle(&m_YUVImgInfo, m_Rect, green, 5);
     gettimeofday(&endTime, NULL);
 
     delta = (endTime.tv_sec - startTime.tv_sec) * 1000000 + (endTime.tv_usec - startTime.tv_usec);

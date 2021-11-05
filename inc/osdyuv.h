@@ -1,3 +1,12 @@
+/*
+ * @Description: Draw line/rectangle on YUV.
+ * @Version: 1.0
+ * @Author: Ricardo Lu<shenglu1202@163.com>
+ * @Date: 2021-11-03 11:03:18
+ * @LastEditTime: 2021-11-03 11:12:40
+ * @LastEditors: Please set LastEditors
+ */
+
 #ifndef __DRAW_RECT_NV12__
 #define __DRAW_RECT_NV12__
 
@@ -49,7 +58,7 @@ typedef struct
 	imgPoint startPoint;
 	imgPoint endPoint;
 	uint16_t thick;
-	YUVColor color;
+	YUVPixColor color;
 }lineInfo;
 
 typedef struct
@@ -82,9 +91,9 @@ static YUVPixColor s_color_table[YUV_COLOR_MAX] = {
 	{0xff, 0x80, 0x80}, // white
 };
 
-void setYUVPix(unsigned char* YBuf, unsigned char * UVBuf, YUVType type, uint16_t width, uint16_t height, imgPoint point, YUVColor color);
+void setYUVPix(unsigned char* YBuf, unsigned char * UVBuf, YUVType type, uint16_t width, uint16_t height, imgPoint point, YUVPixColor color);
 void drawLine(YUVImgInfo *img, lineInfo *line);
-void drawRectangle(YUVImgInfo *img, YUVRectangle rect, YUVColor color, uint16_t thick);
+void drawRectangle(YUVImgInfo *img, YUVRectangle rect, YUVPixColor color, uint16_t thick);
 
 
 #endif
