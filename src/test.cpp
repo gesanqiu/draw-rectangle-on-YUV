@@ -1,10 +1,10 @@
 /*
- * @Author: your name
- * @Date: 2021-11-03 11:03:18
- * @LastEditTime: 2021-11-03 11:39:30
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: /ReID/thirdparty/draw-rectangle-on-YUV/test.cpp
+ * @Description: 
+ * @version: 
+ * @Author: Ricardo Lu<sheng.lu@thundercomm.com>
+ * @Date: 2022-02-23 18:51:25
+ * @LastEditors: Ricardo Lu
+ * @LastEditTime: 2022-02-23 18:56:10
  */
 #include <stdio.h>
 #include <sys/time.h>
@@ -18,7 +18,7 @@
 
 int main()
 {
-    FILE *fp = fopen("test_nv12.yuv", "rb");
+    FILE *fp = fopen("../test_nv12.yuv", "rb");
     uint8_t *img = (uint8_t *)malloc(sizeof(uint8_t) * YUV_IMAGE_SIZE);
 
     int size = fread(img, YUV_IMAGE_SIZE, 1, fp);
@@ -37,18 +37,17 @@ int main()
     m_Rect.height = 800;
     m_Rect.width = 1000;
 
-    YUVPixColor green = {0x00, 0x00, 0xff};
     timeval startTime, endTime;
     long long int delta;
 
     gettimeofday(&startTime, NULL);
-    drawRectangle(&m_YUVImgInfo, m_Rect, green, 5);
+    drawRectangle(&m_YUVImgInfo, m_Rect, YUV_BLUE, 25);
     gettimeofday(&endTime, NULL);
 
     delta = (endTime.tv_sec - startTime.tv_sec) * 1000000 + (endTime.tv_usec - startTime.tv_usec);
     printf("cost time: %lld\n", delta);
 
-    FILE* fp_save = fopen("./yuv_data_line.nv12", "wb+");
+    FILE* fp_save = fopen("./yuv_data_line_25.nv12", "wb+");
         fwrite(img, YUV_IMAGE_SIZE, 1, fp_save);
     
     fclose(fp);
